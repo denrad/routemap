@@ -5,6 +5,16 @@ const daysPerYear = 365,
       return Math.round(value * 100) / 100;
     };
 
+const currency = new Intl.NumberFormat("ru", {
+    "style": "currency",
+    "currency": "RUB"
+}),
+    formatter = new Intl.NumberFormat("ru", {
+       "useGrouping": true,
+
+       "minimumFractionDigits": 2
+    });
+
 class Route {
     public busses: number;
     public hours: number;
@@ -99,9 +109,17 @@ window.addEventListener('DOMContentLoaded', () => {
         let result = route.calc();
         $('#output').show();
         for (let key in result) {
-            let value = result[key];
-            console.log(`#td${key} = ${value}`);
-            $(`#td${key}`).html(round2(value).toString());
+            let value = result[key],
+                $cell = $(`#td${key}`);
+
+            if ($cell.hasClass('rouble')) {
+                value = currency.format(value)
+            } else {
+                value = formatter.format(value);
+            }
+            $cell.text(value);
         }
+
+        $('#c51').text(currency.format(result[51]));
     });
 });

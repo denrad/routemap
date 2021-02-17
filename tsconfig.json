@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "module": "ES6",
     "target": "es5",
     "sourceMap": true,
     "outFile": "./build.js"
