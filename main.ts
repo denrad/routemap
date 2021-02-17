@@ -28,7 +28,6 @@ class Route {
        let c = {};
        c[8] = this.busses * this.hours * daysPerYear;
        c[9] = this.kilometers * (this.flights_workdays * this.workdays + this.flights_weekend * this.weekends);
-       alert(c[9]);
        c[10] = 90000;
        c[11] = 70000;
        c[12] = 1.08;
