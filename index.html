@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Новая Маршрутная Сеть</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <style type="text/css">
+        #output {
+            display: none;
+        }
+
+        td, th {
+            border: 1px solid #999;
+            padding: 0.5rem;
+        }
+
+        table th {
+            text-align: left;
+        }
+
+        th[scope=row] {
+            font-weight: normal;
+            max-width: 40%;
+        }
+
+        table {
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+            border: 3px solid #000;
+        }
+
+        thead th:nth-child(1) {
+            width: 30%;
+        }
+
+        thead th:nth-child(2) {
+            width: 20%;
+        }
+
+        thead th:nth-child(3) {
+            width: 15%;
+        }
+
+        th, td {
+            padding: 20px;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #ccc;
+        }
+
+        table {
+            background-color: #fff;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="build.js"></script>
+</head>
+<body>
+<header>
+    <h1>Новая Маршрутная Сеть</h1>
+</header>
+<main>
+    <form>
+        <!-- Количство автобусов -->
+        <div>
+            <label for="busses">Количство автобусов</label>
+            <input type="number" id="busses" value="1">
+        </div>
+
+        <!-- Часы работы -->
+        <div>
+            <label for="hours">Часы работы</label>
+            <input type="number" id="hours" value="12">
+        </div>
+
+        <!-- Километраж маршрута -->
+        <div>
+            <label for="kilometers">Километраж маршрута</label>
+            <input type="number" id="kilometers" value="10">
+        </div>
+
+        <!-- Количество рейсов в будни -->
+        <div>
+            <label for="flights_workdays">Количество рейсов в будни</label>
+            <input type="number" id="flights_workdays" value="90">
+        </div>
+
+        <!-- Количество рейсов в выходные -->
+
+        <div>
+            <label for="flights_weekend">Количество рейсов в выходные</label>
+            <input type="number" id="flights_weekend" value="79">
+        </div>
+
+        <button type="button" id="calc">Расчет</button>
+
+        <div id="output">
+
+            <br>
+
+            <table>
+                <caption>НАЧАЛЬНАЯ (МАКСИМАЛЬНАЯ) ЦЕНА КОНТРАКТА на выполнение работ, связанных с осуществлением регулярных перевозок пассажиров и багажа автомобильным транспортом по регулируемым тарифам</caption>
+                <tr>
+                    <th scope="col">Наименование показателей</th>
+                    <th scope="col">Ед. изм.</th>
+                    <th scope="col">Автобусы</th>
+                </tr>
+
+                <tr>
+                    <th scope="row">Планируемое количество часов работы</th>
+                    <td>час</td>
+                    <td id="td8">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Lti - планируемый пробег</th>
+                    <td>км</td>
+                    <td id="td9">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">ЗПВi - расчетная месячная оплата труда водителя</th>
+                    <td>руб.</td>
+                    <td id="td10">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">ЗПР - расчетная месячная оплата труда ремонтного рабочего</th>
+                    <td>руб.</td>
+                    <td id="td11">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Kпз - коэффициент, характеризующий продолжительность подготовительно-заключительного времени, времени прохождения предрейсовых инструктажей и медицинских осмотров водителя</th>
+                    <td>&nbsp;</td>
+                    <td id="td12">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Км - коэффициент, учитывающий особенности рынка труда в городах с численностью населения свыше миллиона человек</th>
+                    <td>&nbsp;</td>
+                    <td id="td13">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">lпцt - индекс потребительских цен</th>
+                    <td>&nbsp;</td>
+                    <td id="td14">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">ФРВв - годовой фонд рабочего времени водителя транспортных средств при соблюдении нормальной, 40-часовой, продолжительности рабочего времени в неделю</th>
+                    <td>час</td>
+                    <td id="td15">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">ФРВрр - годовой фонд рабочего времени ремонтного рабочего при соблюдении нормальной, 40-часовой, продолжительности рабочего времени в неделю</th>
+                    <td>час</td>
+                    <td id="td16">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Hsi - транспортная норма расхода топлива на 100 км пробега</th>
+                    <td>л / м&sup3;</td>
+                    <td id="td17">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">D - поправочный коэффициент</th>
+                    <td>%</td>
+                    <td id="td18">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Нотi- норма расхода топлива на работу отопителей</th>
+                    <td>л/ч</td>
+                    <td id="td19">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Rтti - расход топлива на 1 км пробега</th>
+                    <td>л</td>
+                    <td id="td20">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Цтi - цена 1 л/ 1 м3 топлива по данным Росстата</th>
+                    <td>руб.</td>
+                    <td id="td21">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Iтt - индекс цен производителей нефтепродуктов</th>
+                    <td>&nbsp;</td>
+                    <td id="td22">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Ттi - базовая удельная трудоемкость технического обслуживания транспортных средств</th>
+                    <td>&nbsp;</td>
+                    <td id="td23">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Kзп - коэффициент корректировки базовой удельной трудоемкости технического обслуживания транспортных средств в зависимости от природно-климатических условий</th>
+                    <td>&nbsp;</td>
+                    <td id="td24">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Трi - базовая удельная трудоемкость текущего ремонта транспортных средств</th>
+                    <td>&nbsp;</td>
+                    <td id="td25">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Kз - коэффициент корректировки базовой трудоемкости текущего ремонта транспортных средств в зависимости от природно-климатических условий</th>
+                    <td>&nbsp;</td>
+                    <td id="td26">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Стсф - суммарный тариф отчислений на социальные нужды и обязательное социальное страхование от несчастных случаев на производстве и профессиональных заболеваний</th>
+                    <td>%</td>
+                    <td id="td27">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Ушi - базовые удельные расходы на шины i-го класса в расчете на 1 км пробега транспортных средств i-го класса</th>
+                    <td>руб./км</td>
+                    <td id="td28">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">lмоt - индекс цен на машины и оборудование для t-того года срока действия контракта</th>
+                    <td>&nbsp;</td>
+                    <td id="td29">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">lмt - индекс цен на машины и оборудование с декабря 2017 года</th>
+                    <td>&nbsp;</td>
+                    <td id="td30">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Узчi - базовые удельные расходы на з/части и материалы i-го класса в расчете на 1 км пробега транспортных средств i-го класса</th>
+                    <td>&nbsp;</td>
+                    <td id="td31">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Кзч -коэффициент корректировки базовых удельных расходов на запасные части и материалы в зависимости от природно-климатических условий</th>
+                    <td>&nbsp;</td>
+                    <td id="td32">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Кпр - отношение суммы прочих расходов по обычным видам деятельности и косвенных расходов к переменным расходам</th>
+                    <td>&nbsp;</td>
+                    <td id="td33">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">β - коэффициент использования пробега</th>
+                    <td>&nbsp;</td>
+                    <td id="td34">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">R - уровень рентабельности</th>
+                    <td>&nbsp;</td>
+                    <td id="td35">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Мi - максимальное количество транспортных средств i-го класса</th>
+                    <td>ед.</td>
+                    <td id="td36">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Цi - средняя рыночная стоимость транспортных средств</th>
+                    <td>руб.</td>
+                    <td id="td37">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">r - общее количество месяцев исполнения контракта</th>
+                    <td>мес.</td>
+                    <td id="td38">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Тпi - срок полезного использования</th>
+                    <td>лет</td>
+                    <td id="td39">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Sti - максимальная себестоимость 1 км пробега</th>
+                    <td>руб./км</td>
+                    <td id="td40">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">в том числе</th>
+                    <td>&nbsp;</td>
+                    <td id="td41">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Расходы на оплату труда водителей</th>
+                    <td>&nbsp;</td>
+                    <td id="td42">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Отчисления на социальные нужды от оплаты труда водителей</th>
+                    <td>&nbsp;</td>
+                    <td id="td43">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Расходы на топливо</th>
+                    <td>&nbsp;</td>
+                    <td id="td44">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Расходы на смазочные и прочие эксплуатационные материалы</th>
+                    <td>&nbsp;</td>
+                    <td id="td45">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Расходы на износ и ремонт шин</th>
+                    <td>&nbsp;</td>
+                    <td id="td46">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Расходы на техническое обслуживание и ремонт ТС</th>
+                    <td>&nbsp;</td>
+                    <td id="td47">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Прочие и косвенные расходы</th>
+                    <td>&nbsp;</td>
+                    <td id="td48">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Сi - максимальная стоимость работы транспортных средств i-го класса</th>
+                    <td>руб.</td>
+                    <td id="td49">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">Соi - стоимость приобретения и установки оборудования для безналичной оплаты, расходы на его эксплуатацию и оплату услуг оператора системы безналичной оплаты проезда</th>
+                    <td>руб.</td>
+                    <td id="td50">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th scope="row">НМЦК</th>
+                    <td>руб.</td>
+                    <td id="td51">&nbsp;</td>
+                </tr>
+            </table>
+
+        </div>
+
+    </form>
+</main>
+</body>
+</html>
