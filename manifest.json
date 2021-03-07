@@ -1,0 +1,22 @@
+{
+  "short_name": "Калькулятор НМЦК",
+  "name": "Калькулятор НМЦК",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/logo.ico",
+      "sizes": "128x128"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "background_color": "#3367D6",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#3367D6",
+  "description": "Калькулятор начальной максимальной цены брутто-контракта (НМЦК) на год",
+  "lang": "Russian"
+}

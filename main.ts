@@ -1,4 +1,4 @@
-/// <reference path ="node_modules/@types/jquery/JQuery.d.ts"/>
+ // <reference path ="node_modules/@types/jquery/JQuery.d.ts"/>
 
 const daysPerYear = 365,
     round2 = function (value) {
@@ -23,22 +23,26 @@ class Route {
     public flights_weekend: number;
     public workdays = 247;
     public weekends = 118;
+    public c10 : number;
+    public c37 : number;
 
     public result : number;
 
-    constructor(busses: number, hours: number, kilometers: number, flights_workdays: number, flights_weekend: number) {
+    constructor(busses: number, hours: number, kilometers: number, flights_workdays: number, flights_weekend: number, c10 : number, c37 : number) {
         this.busses = busses;
         this.hours = hours;
         this.kilometers = kilometers;
         this.flights_workdays = flights_workdays;
         this.flights_weekend = flights_weekend;
-    }
+        this.c10 = c10;
+        this.c37 = c37;
+  }
 
     calc() {
        let c = {};
        c[8] = this.busses * this.hours * daysPerYear;
        c[9] = this.kilometers * (this.flights_workdays * this.workdays + this.flights_weekend * this.weekends);
-       c[10] = 90000;
+       c[10] = this.c10;
        c[11] = 70000;
        c[12] = 1.08;
        c[13] = 1.0;
@@ -64,17 +68,16 @@ class Route {
        c[33] = 0.58;
        c[34] = 0.96;
        c[35] = 1.048;
-       c[36] = 12;
-       c[37] = 11000000;
+       c[36] = this.busses;
+       c[37] = this.c37;
        c[38] = 12;
        c[39] = 7;
-       c[42] = round2(12 * 1.2 * c[10] * c[13] * c[8] * c[12] * c[14] / (c[9] * c[15])); // =ОКРУГЛ(12*1,2*C10*C13*C8*C12*C14/(C9*C15);2)
+       c[42] = round2(12 * 1.2 * this.c10 * c[13] * c[8] * c[12] * c[14] / (c[9] * c[15])); // =ОКРУГЛ(12*1,2*C10*C13*C8*C12*C14/(C9*C15);2)
        c[43] = round2(c[42] * c[27] / 100);
        c[44] = round2(c[21]*c[20]*c[22]); // =ОКРУГЛ(C21*C20*C22;2)
        c[45] = round2(c[44] * 0.075); // =ОКРУГЛ(C44*0,075;2)
        c[46] = round2(c[28] * c[30]); // =ОКРУГЛ(C28*C30;2)
 
-        // =ОКРУГЛ(C31*C32*C30+0,001*12*1,2*C14*C11*C13*(C23/C24+C25*C26)/C16*(1+30,2/100);2)
        c[47] = round2(
            c[31] * c[32] * c[30] + 0.001 * 12 * 1.2 * c[14] * c[11] * c[13]
             * (c[23] / c[24] + c[25] * c[26]) / c[16] * (1 + 30.2/100)
@@ -82,7 +85,10 @@ class Route {
 
        c[48] = round2(c[33] * (c[44] + c[45] + c[46] + c[47])); // =ОКРУГЛ(C33*(C44+C45+C46+C47);2)
        c[40] = c[42]+c[43]+c[44]+c[45]+c[46]+c[47]+c[48];
-       c[49] = c[40]*c[35]*c[9]/c[34] + c[36]*c[37]*c[29]*c[38]/(12 * c[39]); // =(C40*C35*C9/C34)+C36*C37*C29*C38/(12*C39)
+
+       console.log(`c40 = ${c[42]} + ${c[43]} + ${c[44]} + ${c[45]} + ${c[46]} + ${c[47]} + ${c[48]}`)
+
+       c[49] = c[40]*c[35]*c[9]/c[34] + c[36]* this.c37 *c[29]*c[38]/(12 * c[39]); // =(C40*C35*C9/C34)+C36*C37*C29*C38/(12*C39)
        c[50] = 0;
        this.result = c[51] = round2(c[49] + c[50]);
 
@@ -103,10 +109,15 @@ window.addEventListener('DOMContentLoaded', () => {
             hours,
             kilometers,
             flights_workdays,
-            flights_weekend
+            flights_weekend,
+            ~~$('#c10').val(),
+            ~~$('#c37').val()
         );
 
         let result = route.calc();
+
+       console.log(result);
+
         $('#output').show();
         for (let key in result) {
             let value = result[key],

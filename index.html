@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Новая Маршрутная Сеть</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
     <style type="text/css">
         #output {
             display: none;
@@ -68,10 +69,15 @@
     <h1>Новая Маршрутная Сеть</h1>
 </header>
 <main>
+    <p style="max-width: 50%;">Мы создали калькулятор начальной максимальной цены брутто-контракта (НМЦК) на год. В
+        России такой вид контракта
+        считается согласно 158 приказу Министерство транспорта РФ сложной формулой и учитываются многие факторы. Мы
+        собрали их для вас в удобный калькулятор, который может примерно оценить стоимость транспортной работы.</p>
+
     <form>
         <!-- Количство автобусов -->
         <div>
-            <label for="busses">Количство автобусов</label>
+            <label for="busses">Количество автобусов</label>
             <input type="number" id="busses" value="1">
         </div>
 
@@ -85,7 +91,6 @@
         <div>
             <label for="kilometers">Километраж маршрута</label>
             <input type="number" id="kilometers" value="10">
-        </div>
 
         <!-- Количество рейсов в будни -->
         <div>
@@ -95,12 +100,17 @@
 
         <!-- Количество рейсов в выходные -->
 
-        <div>
-            <label for="flights_weekend">Количество рейсов в выходные</label>
-            <input type="number" id="flights_weekend" value="79">
-        </div>
+            <div>
+                <label for="c10">ЗПВi - расчетная месячная оплата труда водителя</label>
+                <input type="number" id="c10" value="90000">
+            </div>
 
-        <div style="padding-top: 10px;">
+            <div>
+                <label for="c37">Цi - средняя рыночная стоимость транспортных средств</label>
+                <input type="number" id="c37" value="4000000">
+            </div>
+
+            <div style="padding-top: 10px;">
             <button type="button" id="calc">Расчет</button>
         </div>
 
