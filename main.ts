@@ -25,7 +25,6 @@ class Route {
     public weekends = 118;
     public c10 : number;
     public c37 : number;
-
     public result : number;
 
     constructor(busses: number, hours: number, kilometers: number, flights_workdays: number, flights_weekend: number, c10 : number, c37 : number) {
@@ -97,6 +96,8 @@ class Route {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    const debugMode = (location.hash == '#debug');
+
     $('#calc').on('click', () => {
 
         let busses = ~~$('#busses').val(),
@@ -116,7 +117,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
         let result = route.calc();
 
-       console.log(result);
+       if (debugMode) {
+           console.log(result);
+       }
 
         $('#output').show();
         for (let key in result) {
@@ -133,4 +136,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
         $('#c51').text(currency.format(result[51]));
     });
+
+    if (debugMode) {
+        $('th[scope=row]').each((i, el) => {
+            let html = $(el).html();
+            $(el).html(`${i + 8}. ${html}`);
+        });
+    }
 });
