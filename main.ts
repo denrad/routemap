@@ -1,6 +1,6 @@
  // <reference path ="node_modules/@types/jquery/JQuery.d.ts"/>
 
-const daysPerYear = 365,
+const daysPerYear = 365, // TODO добавить поддерку високосных годов
     round2 = function (value) {
       return Math.round(value * 100) / 100;
     };
@@ -11,7 +11,6 @@ const currency = new Intl.NumberFormat("ru", {
 }),
     formatter = new Intl.NumberFormat("ru", {
        "useGrouping": true,
-
        "minimumFractionDigits": 2
     });
 
@@ -19,40 +18,44 @@ class Route {
     public busses: number;
     public hours: number;
     public kilometers: number;
-    public flights_workdays: number;
-    public flights_weekend: number;
-    public workdays = 247;
-    public weekends = 118;
+    public flights: number;
     public c10 : number;
+    public c11 : number;
     public c37 : number;
+    public c17 : number;
+    public c19 : number;
+    public c21 : number;
     public result : number;
 
-    constructor(busses: number, hours: number, kilometers: number, flights_workdays: number, flights_weekend: number, c10 : number, c37 : number) {
+    constructor(busses: number, hours: number, kilometers: number, flights: number, c10 : number, c37 : number, c11 : number, c17 : number, c19 : number, c21 : number) {
         this.busses = busses;
         this.hours = hours;
         this.kilometers = kilometers;
-        this.flights_workdays = flights_workdays;
-        this.flights_weekend = flights_weekend;
+        this.flights = flights;
         this.c10 = c10;
+        this.c11 = c11;
         this.c37 = c37;
+        this.c17 = c17;
+        this.c19 = c19;
+        this.c21 = c21;
   }
 
     calc() {
        let c = {};
        c[8] = this.busses * this.hours * daysPerYear;
-       c[9] = this.kilometers * (this.flights_workdays * this.workdays + this.flights_weekend * this.weekends);
+       c[9] = this.kilometers * this.flights * daysPerYear;
        c[10] = this.c10;
-       c[11] = 70000;
+       c[11] = this.c11;
        c[12] = 1.08;
        c[13] = 1.0;
        c[14] = 1.04;
        c[15] = 1744;
        c[16] = 1832;
-       c[17] = 39.8;
+       c[17] = this.c17;
        c[18] = 7.5;
-       c[19] = 3.5;
+       c[19] = this.c19;
        c[20] = c[17] / 100 * (1+0.01 * c[18]) + c[19] / (c[9] / c[8]) * 6/12;
-       c[21] = 56;
+       c[21] = this.c21;
        c[22] = 1.014;
        c[23] = 13.3;
        c[24] = 0.9;
@@ -103,16 +106,19 @@ window.addEventListener('DOMContentLoaded', () => {
         let busses = ~~$('#busses').val(),
             hours = ~~$('#hours').val(),
             kilometers = ~~$('#kilometers').val(),
-            flights_workdays = ~~$('#flights_workdays').val(),
-            flights_weekend = ~~$('#flights_weekend').val();
+            flights_workdays = ~~$('#flights_workdays').val();
+
         const route = new Route(
             busses,
             hours,
             kilometers,
             flights_workdays,
-            flights_weekend,
             ~~$('#c10').val(),
-            ~~$('#c37').val()
+            ~~$('#c37').val(),
+            ~~$('#c11').val(),
+            ~~$('#c17').val(),
+            ~~$('#c19').val(),
+            ~~$('#c21').val()
         );
 
         let result = route.calc();
